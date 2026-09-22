@@ -1,5 +1,4 @@
-[ 
-  
+[
   {
     "id": 1,
     "name": "John Doe",
@@ -11,12 +10,5 @@
     "name": "John Doe",
     "email": "john@gmail.com",
     "password": "Password123!"
-    
-  },
-  {
-    "id": 3,
-    "name": "John Doe",
-    "email": "johppn@gmail.com",
-    "password": "$2b$12$6yihYJxraNjTb9IeanQV.OO3IEDFatvul8QvxLkIPWZdUXMIN3jnO"
   }
 ]

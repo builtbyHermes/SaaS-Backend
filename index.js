@@ -1,5 +1,7 @@
+import {register,login,} from "./controllers/authController.js";
+import {updateProfile,changePassword, deleteAccount,} from "./controllers/userController.js";
 import express from "express";
-import { register,login } from "./controllers/authController.js";
+import { authMiddleware } from "./middelware/authMiddleware.js";
 
 const app = express();
 const port = 3000;
@@ -76,6 +78,7 @@ app.post("/login", validLoginInfo, login);
 
 // Logout
 app.post("/logout", (req, res) => {
+    //we should be able to delete the jwt created for the user
   try {
     res.send("User logged out");
   } catch (error) {
@@ -84,40 +87,18 @@ app.post("/logout", (req, res) => {
 });
 
 // Update profile
-app.patch("/updateProfile", (req, res) => {
-  try {
-    res.send("Profile update endpoint");
-  } catch (error) {
-    res.status(500).send("Something went wrong");
-  }
-});
+app.patch("/updateProfile",authMiddleware,updateProfile);
 
-// Change password
-app.patch("/changeProfile", (req, res) => {
-  try {
-    res.send("Change password endpoint");
-  } catch (error) {
-    res.status(500).send("Something went wrong");
-  }
-});
 
 // Reset password
-app.put("/resetPassword", (req, res) => {
-  try {
-    res.send("Reset password endpoint");
-  } catch (error) {
-    res.status(500).send("Something went wrong");
-  }
-});
+app.patch(
+  "/changePassword",
+  authMiddleware,
+  changePassword
+);
 
 // Delete account
-app.delete("/deleteAccount", (req, res) => {
-  try {
-    res.send("Delete account endpoint");
-  } catch (error) {
-    res.status(500).send("Something went wrong");
-  }
-});
+app.delete("/deleteAccount",authMiddleware,deleteAccount);
 
 app.listen(port, () => {
   console.log(`Port started at ${port}`);

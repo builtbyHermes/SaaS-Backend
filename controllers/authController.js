@@ -1,7 +1,24 @@
 import { getUsers, saveUsers } from "../data/users.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+
+const generateToken = (user) => {
+
+  return jwt.sign(
+    {
+      id: user.id,
+      email: user.email,
+    },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: process.env.JWT_EXPIRES_IN,
+    }
+  );
+};
+
 
 export const register = async (req, res) => {
+  
   try {
     const { name, email, password } = req.validData;
     
@@ -65,15 +82,19 @@ export const login = async (req, res) => {
       password,
       user.password
     );
-
+    
+    
     if (!passwordMatches) {
       return res.status(401).json({
         message: "Invalid email or password",
       });
     }
 
+    const token = generateToken(user);
+
     res.status(200).json({
       message: "Login successful",
+      token,
       user: {
         id: user.id,
         name: user.name,
